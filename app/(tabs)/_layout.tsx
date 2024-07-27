@@ -19,8 +19,9 @@ export default function TabLayout() {
     name='index'
     options={{
      title: 'صفحه اصلی',
+     tabBarLabelStyle: { color: '#5e0acc' },
      tabBarIcon: ({ color, focused }) => (
-      <TabBarIcon name={focused ? 'home' : 'home-outline'} color={color} />
+      <TabBarIcon name={focused ? 'home' : 'home-outline'} color='#5e0acc' />
      ),
     }}
    />

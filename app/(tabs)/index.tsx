@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, View, FlatList, Button } from 'react-native';
 import GoalItem from '../components/GoalItem';
 import GoalInput from '../components/GoalInput';
+import { StatusBar } from 'expo-status-bar';
 
 type TItem = {
  id: number;
@@ -31,28 +32,31 @@ export default function HomeScreen() {
  };
 
  return (
-  <View style={styles.appContainer}>
-   <Button
-    title='افزودن هدف جدید'
-    color='#5e0acc'
-    onPress={() => setModalVisibility(true)}
-   />
-   <GoalInput
-    goalItem={goalItem}
-    modalVisibility={modalVisibility}
-    onAddGoal={addGoalHandler}
-    onClose={() => setModalVisibility(false)}
-    onGoalInputHandler={goalInputHandler}
-   />
-   <View style={styles.goalsContainer}>
-    <FlatList
-     data={goals}
-     renderItem={({ index, item }) => (
-      <GoalItem index={index} item={item} onDelete={deleteHandler} />
-     )}
+  <>
+   <StatusBar style='dark' />
+   <View style={styles.appContainer}>
+    <Button
+     title='افزودن هدف جدید'
+     color='#5e0acc'
+     onPress={() => setModalVisibility(true)}
     />
+    <GoalInput
+     goalItem={goalItem}
+     modalVisibility={modalVisibility}
+     onAddGoal={addGoalHandler}
+     onClose={() => setModalVisibility(false)}
+     onGoalInputHandler={goalInputHandler}
+    />
+    <View style={styles.goalsContainer}>
+     <FlatList
+      data={goals}
+      renderItem={({ index, item }) => (
+       <GoalItem index={index} item={item} onDelete={deleteHandler} />
+      )}
+     />
+    </View>
    </View>
-  </View>
+  </>
  );
 }
 
