@@ -1,4 +1,4 @@
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet, Modal } from 'react-native';
 
 type TItem = {
  id: number;
@@ -6,47 +6,68 @@ type TItem = {
 };
 
 type TProps = {
- goalText: TItem | null;
+ goalItem: TItem | null;
+ modalVisibility: boolean;
  onGoalInputHandler: (text: string) => void;
- onAddGoalHandler: () => void;
+ onAddGoal: () => void;
+ onClose: () => void;
 };
 
 const GoalInput = ({
- goalText,
- onAddGoalHandler,
+ goalItem,
+ modalVisibility,
+ onAddGoal,
+ onClose,
  onGoalInputHandler,
 }: TProps) => {
  return (
-  <View style={styles.inputContainer}>
-   <TextInput
-    textAlign='right'
-    value={goalText ? goalText.text : ''}
-    style={styles.textInput}
-    placeholder='هدف شما !'
-    onChangeText={onGoalInputHandler}
-   />
-   <Button title='افزودن' onPress={onAddGoalHandler} />
-  </View>
+  <Modal visible={modalVisibility} animationType='slide'>
+   <View style={styles.inputContainer}>
+    <TextInput
+     textAlign='right'
+     value={goalItem ? goalItem.text : ''}
+     style={styles.textInput}
+     placeholder='هدف شما !'
+     onChangeText={onGoalInputHandler}
+    />
+    <View style={styles.buttonContainer}>
+     <View style={styles.button}>
+      <Button title='افزودن' onPress={onAddGoal} disabled={!goalItem} />
+     </View>
+     <View style={styles.button}>
+      <Button title='بستن' onPress={onClose} />
+     </View>
+    </View>
+   </View>
+  </Modal>
  );
 };
 
 const styles = StyleSheet.create({
  inputContainer: {
   flex: 1,
-  flexDirection: 'row-reverse',
-  justifyContent: 'space-between',
+  justifyContent: 'center',
   alignItems: 'center',
-  paddingBottom: 24,
+  paddingBottom: 8,
+  paddingHorizontal: 16,
   borderBottomWidth: 1,
   borderBottomColor: '#cccccc',
-  marginBottom: 24,
+  marginBottom: 8,
  },
  textInput: {
-  flex: 1,
+  width: '100%',
   borderWidth: 1,
   borderColor: '#cccccc',
-  marginStart: 8,
+  borderRadius: 4,
+  marginBottom: 16,
   padding: 8,
+ },
+ buttonContainer: {
+  flexDirection: 'row',
+ },
+ button: {
+  width: 100,
+  marginHorizontal: 8,
  },
 });
 

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList, Button } from 'react-native';
 import GoalItem from '../components/GoalItem';
 import GoalInput from '../components/GoalInput';
 
@@ -9,32 +9,47 @@ type TItem = {
 };
 
 export default function HomeScreen() {
- const [goalText, setGoalText] = useState<TItem | null>(null);
+ const [modalVisibility, setModalVisibility] = useState(false);
+ const [goalItem, setGoalItem] = useState<TItem | null>(null);
  const [goals, setGoals] = useState<TItem[]>([]);
 
  const goalInputHandler = (text: string) => {
-  setGoalText({
+  setGoalItem({
    id: Date.now(),
    text,
   });
  };
 
  const addGoalHandler = () => {
-  goalText && setGoals((pre) => [...pre, goalText]);
-  setGoalText(null);
+  goalItem && setGoals((pre) => [...pre, goalItem]);
+  setGoalItem(null);
+  setModalVisibility(false);
+ };
+
+ const deleteHandler = (id: number) => {
+  setGoals((pre) => pre.filter((item) => item.id != id));
  };
 
  return (
   <View style={styles.appContainer}>
+   <Button
+    title='افزودن هدف جدید'
+    color='#5e0acc'
+    onPress={() => setModalVisibility(true)}
+   />
    <GoalInput
-    goalText={goalText}
-    onAddGoalHandler={addGoalHandler}
+    goalItem={goalItem}
+    modalVisibility={modalVisibility}
+    onAddGoal={addGoalHandler}
+    onClose={() => setModalVisibility(false)}
     onGoalInputHandler={goalInputHandler}
    />
    <View style={styles.goalsContainer}>
     <FlatList
      data={goals}
-     renderItem={({ index, item }) => <GoalItem index={index} item={item} />}
+     renderItem={({ index, item }) => (
+      <GoalItem index={index} item={item} onDelete={deleteHandler} />
+     )}
     />
    </View>
   </View>

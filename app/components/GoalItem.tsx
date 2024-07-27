@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 
 type TItem = {
  id: number;
@@ -8,33 +8,35 @@ type TItem = {
 type TProps = {
  item: TItem;
  index: number;
+ onDelete: (id: number) => void;
 };
 
-const GoalItem = ({ index, item }: TProps) => {
+const GoalItem = ({ index, item, onDelete }: TProps) => {
  return (
-  <View style={index % 2 ? styles.oddGoalItem : styles.evenGoalItem}>
-   <Text style={styles.goalItem}>
-    {index + 1} - {item.text}
-   </Text>
+  <View style={styles.goalItem}>
+   <Pressable
+    android_ripple={{ color: '#dddddd' }}
+    onPress={() => onDelete(item.id)}
+    // * for IOS
+    // style={({ pressed }) => pressed && styles.pressedItem}
+   >
+    <Text style={styles.goalText}>
+     {index + 1} - {item.text}
+    </Text>
+   </Pressable>
   </View>
  );
 };
 
 const styles = StyleSheet.create({
- evenGoalItem: {
-  padding: 16,
-  marginBottom: 16,
-  borderRadius: 8,
-  backgroundColor: 'blue',
- },
- oddGoalItem: {
-  padding: 16,
-  marginBottom: 16,
-  borderRadius: 8,
-  backgroundColor: 'red',
- },
  goalItem: {
+  margin: 8,
+  borderRadius: 8,
+  backgroundColor: '#5e0acc',
+ },
+ goalText: {
   color: '#fff',
+  padding: 16,
  },
 });
 
